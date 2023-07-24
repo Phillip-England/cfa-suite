@@ -1,6 +1,6 @@
 # About
 
-Chick-fil-A Suite is a web application for Chick-fil-A restaurants. It contains features which are generally useful amongst a wide variaty of Chick-fil-A Businesses.
+Chick-fil-A Suite is a web application for Chick-fil-A restaurants. It contains features which are generally useful amongst a wide variaty of Chick-fil-A's.
 
 Thank you for using Chick-fil-A Suite! We hope this web application simplifies and enhances your business systems for Chick-fil-A locations. Happy serving! 🐔🍟
 
@@ -10,7 +10,7 @@ To get started, follow these steps to clone the repository and set up the necess
 1. Clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/Phillip-England/cfa-suite
+git clone https://github.com/phillip-england/cfa-suite
 ```
 
 2. Create a .env file in the root directory of the project.
