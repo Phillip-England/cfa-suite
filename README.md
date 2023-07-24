@@ -1,16 +1,15 @@
-Cloning the Repository
+# Cloning the Repository
 To get started, follow these steps to clone the repository and set up the necessary environment variables:
 
-Clone the repository to your local machine:
-bash
-Copy code
-git clone <repository_url>
-Create a .env file in the root directory of the project.
+1. Clone the repository to your local machine:
 
-Add the following required variables to the .env file:
+```bashgit clone <repository_url>```
 
-dotenv
-Copy code
+2. Create a .env file in the root directory of the project.
+
+3. Add the following required variables to the .env file:
+
+
 POSTGRES_URL=<your_postgres_server_url>
 SESSION_TOKEN_KEY=<session_cookie_name>
 SERVER_URL=localhost # Set to "localhost" for development, or the production server's index domain.
