@@ -4,10 +4,14 @@ To get started, follow these steps to clone the repository and set up the necess
 1. Clone the repository to your local machine:
 
 ```bash
-	git clone <repository_url>
+git clone https://github.com/Phillip-England/cfa-suite
 ```
 
 2. Create a .env file in the root directory of the project.
+
+```bash
+touch .env
+```
 
 3. Add the following required variables to the .env file:
 
@@ -16,5 +20,3 @@ To get started, follow these steps to clone the repository and set up the necess
 - SESSION_TOKEN_KEY: Specify the name that you want your session cookies to have. Choose a unique and meaningful name for this variable.
 
 - SERVER_URL: In a development environment, set this variable to "localhost." For production, it should point to the index domain of the server running your application.
-
-Thank you for using Chick-fil-A Suite! We hope this web application simplifies and enhances your business systems for Chick-fil-A locations. Happy serving! 🐔🍟
