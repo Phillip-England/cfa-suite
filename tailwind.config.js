@@ -5,7 +5,15 @@ module.exports = {
     extend: {
       colors: {
         main: "#e51636",
-        black: "#4a5568"
+        black: "#222222",
+        white: "#EEEEEE",
+        darkgray: "#303030",
+        gray: "#444444",
+        lightgray: "#555555"
+      },
+      fontFamily: {
+        main: "Montserrat",
+        second: "Lato",
       },
     },
   },
