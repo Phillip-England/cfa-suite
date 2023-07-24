@@ -1,3 +1,9 @@
+# About
+
+Chick-fil-A Suite is a web application for Chick-fil-A restaurants. It contains features which are generally useful amongst a wide variaty of Chick-fil-A Businesses.
+
+Thank you for using Chick-fil-A Suite! We hope this web application simplifies and enhances your business systems for Chick-fil-A locations. Happy serving! 🐔🍟
+
 # Cloning the Repository
 To get started, follow these steps to clone the repository and set up the necessary environment variables:
 
