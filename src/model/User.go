@@ -22,8 +22,11 @@ func NewUser() (*User) {
 	return &User{}
 }
 
-func (m *User) SetEmail(email string) (error) {
+func (m *User) SetEmail(email string) {
 	m.Email = strings.ToLower(email)
+}
+
+func (m *User) ValidateEmail() (error) {
 	if m.Email == "" {
 		return errors.New("email is required")
 	}
@@ -32,17 +35,26 @@ func (m *User) SetEmail(email string) (error) {
 		return errors.New("invalid email address")
 	}
 	return nil
+
 }
 
-func (m *User) SetPassword(password string) (error) {
+func (m *User) SetPassword(password string) {
+	m.Password = password
+}
+
+func (m *User) ValidatePassword() (error) {
 	if m.Password == "" {
 		return errors.New("password is required")
 	}
-	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	return nil
+}
+
+func (m *User) HashPassword() (error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(m.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return err
 	}
-	m.Password = string(hashedPassword)
+	m.SetPassword(string(hashedPassword))
 	return nil
 }
 
@@ -73,17 +85,18 @@ func (m *User) Insert(database *core.Database) error {
 	return nil
 }
 
-func (m *User) FindByEmail(database *core.Database, email string) (*User, error) {
+func (m *User) FindByEmail(database *core.Database, email string) (error) {
+	m.SetEmail(email)
 	query := `SELECT id, email, password FROM "user" WHERE email = $1`
-	row := database.Connection.QueryRow(query, email)
+	row := database.Connection.QueryRow(query, m.Email)
 	err := row.Scan(&m.ID, &m.Email, &m.Password)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
-			return nil, errors.New("user not found")
+			return errors.New("user not found")
 		}
-		return nil, err
+		return err
 	}
-	return m, nil
+	return nil
 }
 
 func (m *User) DeleteSessionsByUser(database *core.Database) error {

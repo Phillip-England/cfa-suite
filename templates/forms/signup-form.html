@@ -3,14 +3,17 @@
 		<h1 class="text-xl font-main">Signup</h1>
 		<a href="/" class="text-sm self-center text-white font-second underline text-blue-500 visited:text-purple-500">Already have an account?</a>	
 	</div>
+	{{ if .SignupFormErr }}
+		<p id="signup-form-err" class="pl-4 mb-8 text-xs font-second text-yellow-500">{{ .SignupFormErr }}</p>
+	{{ end }}
 	<label for="email" class="font-main px-4 py-2 text-xs">Email</label>
-	<input name="email" type="text" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
+	<input _="on input if #signup-form-err is not null add .hidden to #signup-form-err" value="{{ .Email }}" name="email" type="text" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
 	<label for="password" class="font-main px-4 py-2 text-xs">Password</label>
-	<input name="password" type="password" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
-	<label for="password-confirmed" class="font-main px-4 py-2 text-xs">Password Confirmed</label>
-	<input name="password-confirmed" type="password" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
+	<input _="on input if #signup-form-err is not null add .hidden to #signup-form-err" value="{{ .Password }}" name="password" type="password" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
+	<label for="password-confirmed" class="font-main px-4 py-2 text-xs">Confirm Password</label>
+	<input _="on input if #signup-form-err is not null add .hidden to #signup-form-err" value="{{ .PasswordConfirmed }}" name="password-confirmed" type="password" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
 	<div class="flex w-full justify-center">
-		<input _="on click toggle .hidden on me then toggle .hidden on #signup-form-loader" type="submit" value="Signup" class="bg-main py-2 m-4 rounded w-full"/>
+		<input id="signup-form-submit" _="on click toggle .hidden on me then toggle .hidden on #signup-form-loader" type="submit" value="Signup" class="bg-main py-2 m-4 rounded w-full"/>
 		<div id="signup-form-loader" class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
 	</div>
 </form>

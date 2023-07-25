@@ -3,12 +3,17 @@
 		<h1 class="text-xl font-main">Login</h1>
 		<a href="/signup" class="text-sm self-center text-white font-second underline text-blue-500 visited:text-purple-500">Don't have an account?</a>	
 	</div>
+	{{ if .LoginFormErr }}
+		<p id="login-form-err" class="pl-4 mb-8 text-xs font-second text-yellow-500">{{ .LoginFormErr }}</p>
+	{{ end }}
 	<label class="font-main px-4 py-2 text-xs">Email</label>
-	<input type="text" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
+	<input value="{{ .Email }}" type="text" name="email" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
 	<label class="font-main px-4 py-2 text-xs">Password</label>
-	<input type="text" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
+	<input value="{{ .Password }}" type="password" name="password" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
 	<div class="flex w-full justify-center">
-		<input _="on click toggle .hidden on me then toggle .hidden on #login-form-loader" type="submit" value="Login" class="bg-main py-2 m-4 rounded w-full"/>
+		<input id="login-form-submit" _="on click toggle .hidden on me then toggle .hidden on #login-form-loader" type="submit" value="Login" class="bg-main py-2 m-4 rounded w-full"/>
 		<div id="login-form-loader" class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
 	</div>
 </form>
+
+<script type="text/hyperscript">on load add .hidden to #login-form-loader then remove .hidden from #login-form-submit</script>
