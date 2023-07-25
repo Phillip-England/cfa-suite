@@ -1,7 +1,14 @@
-<form id="login-form" class="border border-gray bg-darkgray m-2 rounded text-white flex flex-col">
-	<h1 class="text-xl p-4 mb-4 font-main">Login</h1>
+<form id="login-form" action="/action/login" method="POST" class="border p-4 border-gray bg-darkgray m-2 rounded text-white flex flex-col">
+	<div class="flex justify-between mb-8">
+		<h1 class="text-xl font-main">Login</h1>
+		<a href="/signup" class="text-sm self-center text-white font-second underline text-blue-500 visited:text-purple-500">Don't have an account?</a>	
+	</div>
 	<label class="font-main px-4 py-2 text-xs">Email</label>
 	<input type="text" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
 	<label class="font-main px-4 py-2 text-xs">Password</label>
-	<input type="text" class="mx-4 mb-8 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
+	<input type="text" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
+	<div class="flex w-full justify-center">
+		<input _="on click toggle .hidden on me then toggle .hidden on #login-form-loader" type="submit" value="Login" class="bg-main py-2 m-4 rounded w-full"/>
+		<div id="login-form-loader" class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
+	</div>
 </form>

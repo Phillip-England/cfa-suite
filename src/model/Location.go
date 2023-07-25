@@ -1,27 +1,28 @@
-package types
+package model
 
 import (
+	"cfa-suite/src/core"
 	"errors"
 	"fmt"
 	"strconv"
 )
 
-type LocationModel struct {
+type Location struct {
 	ID int64
 	UserID int64
 	Name string
 	Number int64
 }
 
-func NewLocationModel() *LocationModel {
-	return &LocationModel{}
+func NewLocation() *Location {
+	return &Location{}
 }
 
-func (m *LocationModel) SetUserID(userID int64) {
+func (m *Location) SetUserID(userID int64) {
 	m.UserID = userID
 }
 
-func (m *LocationModel) SetName(name string) error {
+func (m *Location) SetName(name string) error {
 	if len(name) > 64 {
 		return errors.New("name too long")
 	}
@@ -32,7 +33,7 @@ func (m *LocationModel) SetName(name string) error {
 	return nil
 }
 
-func (m *LocationModel) SetNumber(stringNumber string) error {
+func (m *Location) SetNumber(stringNumber string) error {
 	if len(stringNumber) > 12 {
 		return errors.New("number too long")
 	}
@@ -47,7 +48,7 @@ func (m *LocationModel) SetNumber(stringNumber string) error {
 	return nil
 }
 
-func (m *LocationModel) Insert(database *Database) error {
+func (m *Location) Insert(database *core.Database) error {
 	statement := `INSERT INTO location (user_id, name, number) VALUES ($1, $2, $3) RETURNING id`
 	err := database.Connection.QueryRow(statement, m.UserID, m.Name, m.Number).Scan(&m.ID)
 	if err != nil {
@@ -56,7 +57,7 @@ func (m *LocationModel) Insert(database *Database) error {
 	return nil
 }
 
-func (m *LocationModel) GetByID(locationID string, database *Database) error {
+func (m *Location) GetByID(locationID string, database *core.Database) error {
 	query := `SELECT id, user_id, name, number FROM location WHERE id = $1`
 	err := database.Connection.QueryRow(query, locationID).Scan(&m.ID, &m.UserID, &m.Name, &m.Number)
 	if err != nil {
@@ -65,7 +66,7 @@ func (m *LocationModel) GetByID(locationID string, database *Database) error {
 	return nil
 }
 
-func (m *LocationModel) Update(database *Database) error {
+func (m *Location) Update(database *core.Database) error {
 	statement := `UPDATE location SET name = $1, number = $2 WHERE id = $3`
 	_, err := database.Connection.Exec(statement, m.Name, m.Number, m.ID)
 	if err != nil {
@@ -74,7 +75,7 @@ func (m *LocationModel) Update(database *Database) error {
 	return nil
 }
 
-func (m *LocationModel) Delete(database *Database) error {
+func (m *Location) Delete(database *core.Database) error {
 	fmt.Println(m.ID)
 	statement := `DELETE FROM location WHERE id = $1`
 	_, err := database.Connection.Exec(statement, m.ID)
