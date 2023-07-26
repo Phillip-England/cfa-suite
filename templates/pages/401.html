@@ -2,13 +2,13 @@
 <html lang="en">
 <head>
 	{{ template "meta.html" . }}
-	<title>500 Internal Server Error | CFA Suite</title>
+	<title>401 Unauthorized | CFA Suite</title>
 </head>
 <body class="bg-black">
 	{{ template "guest-banner.html" . }}
 	<div class="p-4 m-2 border border-gray bg-darkgray rounded text-white">
-		<h2 class="font-main text-lg">Internal Server Error</h2>
-		<p class="font-second text-xs">{{ .ServerErr }}</p>
+		<h2 class="font-main text-lg">401 Unauthorized</h2>
+		<p class="font-second text-xs">You do not have access to this page</p>
 	</div>
 
 </body>

@@ -2,6 +2,7 @@ package main
 
 import (
 	"cfa-suite/src/core"
+	"cfa-suite/src/middleware"
 	"cfa-suite/src/model"
 	"fmt"
 	"html"
@@ -40,6 +41,14 @@ func main() {
 	r.Static("/static", "./static")
 
 	//==========================================================================
+	// MIDDLEWARE
+	//==========================================================================
+
+	mw := middleware.NewMiddlware()
+	authGroup := r.Group("/", mw.Auth(database))
+	fmt.Println(authGroup)
+
+	//==========================================================================
 	// PAGES
 	//==========================================================================
 
@@ -64,6 +73,20 @@ func main() {
 		c.HTML(200, "500.html", gin.H{
 			"ServerErr": html.EscapeString(c.Query("ServerErr")),
 		})
+	})
+
+	r.GET("/401", func(c *gin.Context) {
+		c.HTML(200, "401.html", nil)
+	})
+
+	authGroup.GET("/home", func(c *gin.Context) {
+		user, ok := c.Get("user")
+		if !ok {
+			c.Redirect(303, "/401")
+			return
+		}
+		fmt.Println(user)
+		c.HTML(200, "home.html", nil)
 	})
 
 	//==========================================================================
@@ -96,7 +119,7 @@ func main() {
 			return
 		}
 		c.SetCookie(os.Getenv("SESSION_TOKEN_KEY"), session.Token, 86400, "/", os.Getenv("SERVER_URL"), true, true)
-		c.Redirect(303, "/")
+		c.Redirect(303, "/home")
 	})
 
 	r.POST("/action/user", func(c *gin.Context) {

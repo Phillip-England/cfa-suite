@@ -4,7 +4,7 @@
 		<a href="/signup" class="text-sm self-center text-white font-second underline text-blue-500 visited:text-purple-500">Don't have an account?</a>	
 	</div>
 	{{ if .LoginFormErr }}
-		<p id="login-form-err" class="pl-4 mb-8 text-xs font-second text-yellow-500">{{ .LoginFormErr }}</p>
+		<p id="login-form-err" class="pl-4 mb-4 text-sm font-second text-yellow-400">{{ .LoginFormErr }}</p>
 	{{ end }}
 	<label class="font-main px-4 py-2 text-xs">Email</label>
 	<input value="{{ .Email }}" type="text" name="email" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />

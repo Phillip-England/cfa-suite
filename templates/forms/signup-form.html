@@ -4,7 +4,7 @@
 		<a href="/" class="text-sm self-center text-white font-second underline text-blue-500 visited:text-purple-500">Already have an account?</a>	
 	</div>
 	{{ if .SignupFormErr }}
-		<p id="signup-form-err" class="pl-4 mb-8 text-xs font-second text-yellow-500">{{ .SignupFormErr }}</p>
+		<p id="signup-form-err" class="pl-4 mb-4 text-sm font-second text-yellow-400">{{ .SignupFormErr }}</p>
 	{{ end }}
 	<label for="email" class="font-main px-4 py-2 text-xs">Email</label>
 	<input _="on input if #signup-form-err is not null add .hidden to #signup-form-err" value="{{ .Email }}" name="email" type="text" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
