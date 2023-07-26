@@ -46,7 +46,6 @@ func main() {
 
 	mw := middleware.NewMiddlware()
 	authGroup := r.Group("/", mw.Auth(database))
-	fmt.Println(authGroup)
 
 	//==========================================================================
 	// PAGES

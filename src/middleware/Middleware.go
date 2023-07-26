@@ -18,13 +18,14 @@ func (mw *Middleware) Auth(database *core.Database) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sessionToken, err := c.Cookie(os.Getenv("SESSION_TOKEN_KEY"))
 		if err != nil {
-			c.Redirect(303, "/401")
+			c.Redirect(303, "/")
 			return
 		}
 		session := model.NewSession()
 		err = session.FindByToken(database, sessionToken)
 		if err != nil {
-			c.Redirect(303, "/401")
+			c.SetCookie(os.Getenv("SESSION_TOKEN_KEY"), "", -1, "/", os.Getenv("SERVER_URL"), true, true)
+			c.Redirect(303, "/")
 			return
 		}
 		user := model.NewUser()
@@ -34,8 +35,16 @@ func (mw *Middleware) Auth(database *core.Database) gin.HandlerFunc {
 		if err != nil {
 			c.Redirect(303, "/401")
 		}
+		// gotcha check if we have the correct user here
 		c.Set("user", trueUser)
 		c.Next()
+	}
+}
 
+func (mw *Middleware) GuestRedirect() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		sessionToken, err := c.Cookie(os.Getenv("SESSION_TOKEN_KEY"))
+		// gotta make sure logged in users are redirected home
+		c.Next()
 	}
 }
