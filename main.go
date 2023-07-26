@@ -27,6 +27,7 @@ func main() {
 	//==========================================================================
 
 	database := core.NewDatabase()
+	_ = database.AddColumnsToUserTable()
 	err := database.InitTables()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -60,7 +61,7 @@ func main() {
 			"Password": html.EscapeString(c.Query("Password")),
 		})
 	})
-
+	
 	guestRoutes.GET("/signup", func(c *gin.Context) {
 		c.HTML(200, "signup.html", gin.H{
 			"SignupFormErr": html.EscapeString(c.Query("SignupFormErr")),
@@ -70,45 +71,51 @@ func main() {
 			"PasswordConfirmed": html.EscapeString(c.Query("PasswordConfirmed")),
 		})
 	})
-
+	
+	
 	//==========================================================================
 	// ERROR PAGES
 	//==========================================================================
-
+	
 	r.GET("/500", func(c *gin.Context) {
 		c.HTML(200, "500.html", gin.H{
 			"ServerErr": html.EscapeString(c.Query("ServerErr")),
 			"Banner": "CFA Suite",
 		})
 	})
-
+	
 	r.GET("/401", func(c *gin.Context) {
 		c.HTML(200, "401.html", gin.H{
 			"Banner": "CFA Suite",
 		})
 	})
-
+	
 	//==========================================================================
 	// USER PAGES
 	//==========================================================================
-
+	
 	protectedRoutes.GET("/home", func(c *gin.Context) {
-		user, ok := c.Get("user")
+		_, ok := c.Get("user")
 		if !ok {
 			c.Redirect(303, "/401")
 			return
 		}
-		fmt.Println(user)
 		c.HTML(200, "home.html", gin.H{
 			"Banner": "CFA Suite",
 			"IsHomePage": "true",
 		})
 	})
-
+	
+	
 	//==========================================================================
 	// ACTIONS
 	//==========================================================================
 
+	r.GET("/logout", func(c *gin.Context) {
+		c.SetCookie(os.Getenv("SESSION_TOKEN_KEY"), "", -1, "/", os.Getenv("SERVER_URL"), true, true)
+		c.Redirect(303, "/")
+	})
+	
 	r.POST("/action/login", func(c *gin.Context) {
 		email := c.PostForm("email")
 		password := c.PostForm("password")

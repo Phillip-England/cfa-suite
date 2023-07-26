@@ -89,3 +89,16 @@ func (d *Database) CreateLocationTable() error {
 	}
 	return nil
 }
+
+func (d *Database) AddColumnsToUserTable() error {
+	query := `
+		ALTER TABLE "user"
+		DROP COLUMN first_name,
+		DROP COLUMN last_name
+	`
+	_, err := d.Connection.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}

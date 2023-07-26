@@ -1,10 +1,13 @@
 <nav id="user-nav-menu" class="hidden text-white fixed z-40 bg-darkgray border-r-2 border-gray w-3/5 h-full">
 	<ul class="text-sm font-second">
-		<li class="flex rounded border border-gray m-2">
-			<a href="/home" class="p-4 w-full m-1 {{ if .IsHomePage }} bg-gray {{ end }}">Home</a>
+		<li class="flex rounded m-2 {{ if .IsHomePage }} border-2 border-lightgray {{ end }}">
+			<a href="/home" class="p-4 w-full">Home</a>
 		</li>
-		<li class="flex border border-gray m-2">
-			<a href="/home" class="p-4 w-full">Logout</a>
+		<li class="flex border border-gray rounded m-2">
+			<a href="/home" class="p-4 w-full">User Settings</a>
+		</li>
+		<li class="flex border border-gray rounded m-2">
+			<a href="/logout" class="p-4 w-full">Logout</a>
 		</li>
 	</ul>
 </nav>
