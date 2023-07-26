@@ -45,47 +45,64 @@ func main() {
 	//==========================================================================
 
 	mw := middleware.NewMiddlware()
-	authGroup := r.Group("/", mw.Auth(database))
+	protectedRoutes := r.Group("/", mw.Auth(database))
+	guestRoutes := r.Group("/", mw.GuestRedirect())
 
 	//==========================================================================
-	// PAGES
+	// GUEST PAGES
 	//==========================================================================
 
-	r.GET("/", func(c *gin.Context) {
+	guestRoutes.GET("/", func(c *gin.Context) {
 		c.HTML(200, "index.html", gin.H{
 			"LoginFormErr": html.EscapeString(c.Query("LoginFormErr")),
+			"Banner": "CFA Suite",
 			"Email": html.EscapeString(c.Query("Email")),
 			"Password": html.EscapeString(c.Query("Password")),
 		})
 	})
 
-	r.GET("/signup", func(c *gin.Context) {
+	guestRoutes.GET("/signup", func(c *gin.Context) {
 		c.HTML(200, "signup.html", gin.H{
 			"SignupFormErr": html.EscapeString(c.Query("SignupFormErr")),
+			"Banner": "CFA Suite",
 			"Email": html.EscapeString(c.Query("Email")),
 			"Password": html.EscapeString(c.Query("Password")),
 			"PasswordConfirmed": html.EscapeString(c.Query("PasswordConfirmed")),
 		})
 	})
 
+	//==========================================================================
+	// ERROR PAGES
+	//==========================================================================
+
 	r.GET("/500", func(c *gin.Context) {
 		c.HTML(200, "500.html", gin.H{
 			"ServerErr": html.EscapeString(c.Query("ServerErr")),
+			"Banner": "CFA Suite",
 		})
 	})
 
 	r.GET("/401", func(c *gin.Context) {
-		c.HTML(200, "401.html", nil)
+		c.HTML(200, "401.html", gin.H{
+			"Banner": "CFA Suite",
+		})
 	})
 
-	authGroup.GET("/home", func(c *gin.Context) {
+	//==========================================================================
+	// USER PAGES
+	//==========================================================================
+
+	protectedRoutes.GET("/home", func(c *gin.Context) {
 		user, ok := c.Get("user")
 		if !ok {
 			c.Redirect(303, "/401")
 			return
 		}
 		fmt.Println(user)
-		c.HTML(200, "home.html", nil)
+		c.HTML(200, "home.html", gin.H{
+			"Banner": "CFA Suite",
+			"IsHomePage": "true",
+		})
 	})
 
 	//==========================================================================
