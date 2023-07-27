@@ -1,4 +1,4 @@
-<nav id="user-nav-menu" class="hidden text-white fixed z-40 bg-darkgray border-r-2 border-gray w-3/5 h-full">
+<nav hx-boost="true" id="user-nav-menu" class="hidden text-white fixed z-40 bg-darkgray border-r-2 border-gray w-3/5 h-full">
 	<ul class="text-sm font-second">
 		<li class="flex rounded m-2 border border-gray {{ if .IsHomePage }} border-2 border-lightgray {{ end }}">
 			<a href="/app/home" class="p-4 w-full" _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay then toggle .hidden on #user-nav-menu then toggle .hidden on #user-banner-bars then toggle .hidden on #user-banner-x then toggle .hidden on #user-nav-overlay">Home</a>
