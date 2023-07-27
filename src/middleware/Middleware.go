@@ -44,7 +44,7 @@ func (mw *Middleware) GuestRedirect() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		sessionToken, _ := c.Cookie(os.Getenv("SESSION_TOKEN_KEY"))
 		if sessionToken != "" {
-			c.Redirect(303, "/home")
+			c.Redirect(303, "/app/home")
 			return
 		}
 		c.Next()
