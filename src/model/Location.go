@@ -11,7 +11,7 @@ type Location struct {
 	ID int64
 	UserID int64
 	Name string
-	Number int64
+	Number string
 }
 
 func NewLocation() *Location {
@@ -40,11 +40,11 @@ func (m *Location) SetNumber(stringNumber string) error {
 	if len(stringNumber) < 3 {
 		return errors.New("number too short")
 	}
-	number, err := strconv.ParseInt(stringNumber, 10, 64)
+	_, err := strconv.ParseInt(stringNumber, 10, 64)
 	if err != nil {
 		return errors.New("please provide a valid number")
 	}
-	m.Number = number
+	m.Number = stringNumber
 	return nil
 }
 

@@ -3,7 +3,7 @@
 		<h1 class="text-xl font-main">Create Locations</h1>
 	</div>
 	{{ if .CreateLocationFormErr }}
-		<p id="create-location-form-err" class="pl-4 mb-4 text-sm font-second text-yellow-400">{{ .LoginFormErr }}</p>
+		<p id="create-location-form-err" class="pl-4 mb-4 text-sm font-second text-yellow-400">{{ .CreateLocationFormErr }}</p>
 	{{ end }}
 	<label class="font-main px-4 py-2 text-xs">Name</label>
 	<input value="{{ .Email }}" type="text" name="name" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />

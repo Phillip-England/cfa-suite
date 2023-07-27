@@ -27,7 +27,6 @@ func main() {
 	//==========================================================================
 
 	database := core.NewDatabase()
-	_ = database.AddColumnsToUserTable()
 	err := database.InitTables()
 	if err != nil {
 		log.Fatal(err.Error())
@@ -94,7 +93,7 @@ func main() {
 	// USER PAGES
 	//==========================================================================
 	
-	protectedRoutes.GET("/home", func(c *gin.Context) {
+	protectedRoutes.GET("/app/home", func(c *gin.Context) {
 		_, ok := c.Get("user")
 		if !ok {
 			c.Redirect(303, "/401")
@@ -106,10 +105,11 @@ func main() {
 		})
 	})
 
-	protectedRoutes.GET("/create-location", func(c *gin.Context) {
+	protectedRoutes.GET("/app/create-location", func(c *gin.Context) {
 		c.HTML(303, "create-location.html", gin.H{
 			"Banner": "CFA Suite",
 			"IsCreateLocationPage": true,
+			"CreateLocationFormErr": html.EscapeString(c.Query("CreateLocationFormErr")),
 		})
 	})
 	
@@ -149,7 +149,7 @@ func main() {
 			return
 		}
 		c.SetCookie(os.Getenv("SESSION_TOKEN_KEY"), session.Token, 86400, "/", os.Getenv("SERVER_URL"), true, true)
-		c.Redirect(303, "/home")
+		c.Redirect(303, "/app/home")
 	})
 
 	r.POST("/api/user", func(c *gin.Context) {
@@ -195,8 +195,27 @@ func main() {
 		c.Redirect(303, "/")
 	})
 
-	r.POST("/api/location", func(c *gin.Context) {
-		c.Redirect(303, "/home")
+	protectedRoutes.POST("/api/location", func(c *gin.Context) {
+		user, ok := c.Get("user")
+		if !ok {
+			c.Redirect(303, "/401")
+			return
+		}
+		name := c.PostForm("name")
+		number := c.PostForm("number")
+		location := model.NewLocation()
+		err := location.SetName(name)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/app/create-location?CreateLocationFormErr=%s", err.Error()))
+			return
+		}
+		err = location.SetNumber(number)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/app/create-location?CreateLocationFormErr=%s", err.Error()))
+			return
+		}
+		fmt.Println(user)
+		c.Redirect(303, "/app/home")
 	})
 
 	//==========================================================================

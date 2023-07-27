@@ -79,22 +79,9 @@ func (d *Database) CreateLocationTable() error {
 			id SERIAL PRIMARY KEY,
 			user_id INT,
 			name VARCHAR(255),
-			number INT,
+			number VARCHAR(255),
 			FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE
 		)
-	`
-	_, err := d.Connection.Exec(query)
-	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (d *Database) AddColumnsToUserTable() error {
-	query := `
-		ALTER TABLE "user"
-		DROP COLUMN first_name,
-		DROP COLUMN last_name
 	`
 	_, err := d.Connection.Exec(query)
 	if err != nil {
