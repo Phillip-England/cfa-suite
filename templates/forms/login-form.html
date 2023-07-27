@@ -11,9 +11,7 @@
 	<label class="font-main px-4 py-2 text-xs">Password</label>
 	<input value="{{ .Password }}" type="password" name="password" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
 	<div class="flex w-full justify-center">
-		<input id="login-form-submit" _="on click toggle .hidden on me then toggle .hidden on #login-form-loader" type="submit" value="Login" class="bg-main py-2 m-4 rounded w-full"/>
+		<input id="login-form-submit" _="on click toggle .hidden on me then toggle .hidden on #login-form-loader" type="submit" value="Login" class="bg-main py-2 m-4 rounded font-main w-full"/>
 		<div id="login-form-loader" class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
 	</div>
 </form>
-
-<script type="text/hyperscript">on load add .hidden to #login-form-loader then remove .hidden from #login-form-submit</script>

@@ -13,7 +13,7 @@
 	<label for="password-confirmed" class="font-main px-4 py-2 text-xs">Confirm Password</label>
 	<input _="on input if #signup-form-err is not null add .hidden to #signup-form-err" value="{{ .PasswordConfirmed }}" name="password-confirmed" type="password" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
 	<div class="flex w-full justify-center">
-		<input id="signup-form-submit" _="on click toggle .hidden on me then toggle .hidden on #signup-form-loader" type="submit" value="Signup" class="bg-main py-2 m-4 rounded w-full"/>
+		<input id="signup-form-submit" _="on click toggle .hidden on me then toggle .hidden on #signup-form-loader" type="submit" value="Signup" class="bg-main py-2 m-4 rounded w-full font-main"/>
 		<div id="signup-form-loader" class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
 	</div>
 </form>

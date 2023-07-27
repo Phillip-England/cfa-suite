@@ -105,6 +105,13 @@ func main() {
 			"IsHomePage": "true",
 		})
 	})
+
+	protectedRoutes.GET("/create-location", func(c *gin.Context) {
+		c.HTML(303, "create-location.html", gin.H{
+			"Banner": "CFA Suite",
+			"IsCreateLocationPage": true,
+		})
+	})
 	
 	
 	//==========================================================================
