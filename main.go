@@ -115,15 +115,15 @@ func main() {
 	
 	
 	//==========================================================================
-	// ACTIONS
+	// API
 	//==========================================================================
 
-	r.GET("/logout", func(c *gin.Context) {
+	r.GET("/api/logout", func(c *gin.Context) {
 		c.SetCookie(os.Getenv("SESSION_TOKEN_KEY"), "", -1, "/", os.Getenv("SERVER_URL"), true, true)
 		c.Redirect(303, "/")
 	})
 	
-	r.POST("/action/login", func(c *gin.Context) {
+	r.POST("/api/login", func(c *gin.Context) {
 		email := c.PostForm("email")
 		password := c.PostForm("password")
 		user := model.NewUser()
@@ -152,7 +152,7 @@ func main() {
 		c.Redirect(303, "/home")
 	})
 
-	r.POST("/action/user", func(c *gin.Context) {
+	r.POST("/api/user", func(c *gin.Context) {
 		email := c.PostForm("email")
 		password := c.PostForm("password")
 		passwordConfirmed := c.PostForm("password-confirmed")
@@ -193,6 +193,10 @@ func main() {
 			return
 		}
 		c.Redirect(303, "/")
+	})
+
+	r.POST("/api/location", func(c *gin.Context) {
+		c.Redirect(303, "/home")
 	})
 
 	//==========================================================================

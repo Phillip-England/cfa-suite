@@ -1,16 +1,16 @@
-<form id="create-location-form" action="/action/login" method="POST" class="border p-4 border-gray bg-darkgray m-2 rounded text-white flex flex-col">
+<form id="create-location-form" action="/api/location" method="POST" class="border p-4 border-gray bg-darkgray m-2 rounded text-white flex flex-col">
 	<div class="flex justify-between mb-8">
-		<h1 class="text-xl font-main">Create Location</h1>
+		<h1 class="text-xl font-main">Create Locations</h1>
 	</div>
 	{{ if .CreateLocationFormErr }}
 		<p id="create-location-form-err" class="pl-4 mb-4 text-sm font-second text-yellow-400">{{ .LoginFormErr }}</p>
 	{{ end }}
-	<label class="font-main px-4 py-2 text-xs">Email</label>
-	<input value="{{ .Email }}" type="text" name="email" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
-	<label class="font-main px-4 py-2 text-xs">Password</label>
-	<input value="{{ .Password }}" type="password" name="password" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
+	<label class="font-main px-4 py-2 text-xs">Name</label>
+	<input value="{{ .Email }}" type="text" name="name" class="mx-4 mb-4 border-gray border bg-darkgray rounded outline-lightgray font-second text-xs p-2" />
+	<label class="font-main px-4 py-2 text-xs">Number</label>
+	<input value="{{ .Password }}" type="text" name="number" class="mx-4 mb-6 bg-darkgray rounded border-gray border outline-lightgray font-second text-xs p-2" />
 	<div class="flex w-full justify-center">
-		<input id="create-location-form-submit" _="on click toggle .hidden on me then toggle .hidden on #create-location-form-loader" type="submit" value="Login" class="bg-main py-2 m-4 rounded w-full font-main"/>
+		<input id="create-location-form-submit" _="on click toggle .hidden on me then toggle .hidden on #create-location-form-loader" type="submit" value="Create" class="bg-main py-2 m-4 rounded w-full font-main"/>
 		<div id="create-location-form-loader" class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
 	</div>
 </form>
