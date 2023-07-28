@@ -3,7 +3,6 @@ package model
 import (
 	"cfa-suite/src/core"
 	"errors"
-	"fmt"
 	"strconv"
 )
 
@@ -76,11 +75,45 @@ func (m *Location) Update(database *core.Database) error {
 }
 
 func (m *Location) Delete(database *core.Database) error {
-	fmt.Println(m.ID)
 	statement := `DELETE FROM location WHERE id = $1`
 	_, err := database.Connection.Exec(statement, m.ID)
 	if err != nil {
 		return err
 	}
 	return nil
+}
+
+func (m *Location) LimitNumberOfLocations(userID int64, database *core.Database) (bool, error) {
+	query := `SELECT COUNT(*) FROM location WHERE user_id = $1`
+	var count int
+	err := database.Connection.QueryRow(query, userID).Scan(&count)
+	if err != nil {
+		return false, err
+	}
+	return count >= 3, nil
+}
+
+func (m *Location) GetLocationsByUserID(userID int64, database *core.Database) ([]*Location, error) {
+	query := `SELECT id, user_id, name, number FROM location WHERE user_id = $1`
+	rows, err := database.Connection.Query(query, userID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	locations := []*Location{}
+	for rows.Next() {
+		location := NewLocation()
+		err := rows.Scan(&location.ID, &location.UserID, &location.Name, &location.Number)
+		if err != nil {
+			return nil, err
+		}
+		locations = append(locations, location)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return locations, nil
 }

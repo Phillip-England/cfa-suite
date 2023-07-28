@@ -37,7 +37,7 @@ func main() {
 	//==========================================================================
 
 	r := gin.Default()
-	r.LoadHTMLGlob("./templates/**/*")
+	r.LoadHTMLGlob("./templates/**/**/*")
 	r.Static("/static", "./static")
 
 	//==========================================================================
@@ -94,14 +94,22 @@ func main() {
 	//==========================================================================
 	
 	protectedRoutes.GET("/app/home", func(c *gin.Context) {
-		_, ok := c.Get("user")
+		userData, ok := c.Get("user")
 		if !ok {
 			c.Redirect(303, "/401")
+			return
+		}
+		user := userData.(*model.User)
+		location := model.NewLocation()
+		locations, err := location.GetLocationsByUserID(user.ID, database)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
 			return
 		}
 		c.HTML(200, "home.html", gin.H{
 			"Banner": "CFA Suite",
 			"IsHomePage": "true",
+			"Locations": locations,
 		})
 	})
 
@@ -201,6 +209,7 @@ func main() {
 			c.Redirect(303, "/401")
 			return
 		}
+		userModel := user.(*model.User)
 		name := c.PostForm("name")
 		number := c.PostForm("number")
 		location := model.NewLocation()
@@ -214,7 +223,21 @@ func main() {
 			c.Redirect(303, fmt.Sprintf("/app/create-location?CreateLocationFormErr=%s", err.Error()))
 			return
 		}
-		fmt.Println(user)
+		hasThreeOrMoreLocations, err := location.LimitNumberOfLocations(userModel.ID, database)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		if hasThreeOrMoreLocations {
+			c.Redirect(303, fmt.Sprintf("/app/create-location?CreateLocationFormErr=%s", "only 3 locations per user"))
+			return
+		}
+		location.SetUserID(userModel.ID)
+		err = location.Insert(database)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
 		c.Redirect(303, "/app/home")
 	})
 

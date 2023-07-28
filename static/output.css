@@ -619,6 +619,10 @@ video {
   height: 7rem;
 }
 
+.h-12 {
+  height: 3rem;
+}
+
 .w-3\/5 {
   width: 60%;
 }
@@ -633,6 +637,10 @@ video {
 
 .w-28 {
   width: 7rem;
+}
+
+.w-12 {
+  width: 3rem;
 }
 
 .flex-grow {
