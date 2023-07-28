@@ -106,10 +106,15 @@ func main() {
 			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
 			return
 		}
+		hasNoLocations := true
+		if len(locations) != 0 {
+			hasNoLocations = false
+		}
 		c.HTML(200, "home.html", gin.H{
 			"Banner": "CFA Suite",
 			"IsHomePage": "true",
 			"Locations": locations,
+			"HasNoLocations": hasNoLocations,
 		})
 	})
 

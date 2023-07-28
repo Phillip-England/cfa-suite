@@ -12,7 +12,10 @@
 	{{ template "big-loader.html" . }}
 	{{ template "big-loader-overlay.html" . }}
 	{{ template "welcome-home.html" . }}
-	{{ template "no-locations-link.html" . }}
+	{{ if .HasNoLocations }} 
+		{{ template "no-locations-link.html" . }} 
+		{{ end }}
+	{{ template "location-selection.html" . }}
 	{{ template "guest-footer.html" . }}
 </body>
 </html>
