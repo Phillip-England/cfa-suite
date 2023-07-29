@@ -12,10 +12,8 @@
 	{{ template "big-loader.html" . }}
 	{{ template "big-loader-overlay.html" . }}
 	{{ template "welcome-home.html" . }}
-	{{ if .HasNoLocations }} 
-		{{ template "no-locations-link.html" . }} 
-		{{ end }}
-	{{ template "location-selection.html" . }}
+	{{ if .HasNoLocations }} {{ template "no-locations-link.html" . }} {{ end }}
+	{{ if .HasLocations }} {{ template "location-selection.html" . }} {{ end }}
 	{{ template "guest-footer.html" . }}
 </body>
 </html>

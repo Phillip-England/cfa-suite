@@ -8,6 +8,7 @@ import (
 	"html"
 	"log"
 	"os"
+	"strconv"
 
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -106,6 +107,10 @@ func main() {
 			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
 			return
 		}
+		maxLocationsToShow := 3
+		if len(locations) > maxLocationsToShow {
+			locations = locations[:maxLocationsToShow]
+		}
 		hasNoLocations := true
 		if len(locations) != 0 {
 			hasNoLocations = false
@@ -115,6 +120,7 @@ func main() {
 			"IsHomePage": "true",
 			"Locations": locations,
 			"HasNoLocations": hasNoLocations,
+			"HasLocations": !hasNoLocations,
 		})
 	})
 
@@ -126,10 +132,59 @@ func main() {
 		})
 	})
 
-	protectedRoutes.GET("/app/view-all-locations", func(c *gin.Context) {
-		c.HTML(200, "view-all-locations.html", gin.H{
-			"Banner": "CFA Suite",
+	protectedRoutes.GET("/app/view-locations/:index", func(c *gin.Context) {
+		userData, ok := c.Get("user")
+		if !ok {
+			c.Redirect(303, "/401")
+			return
+		}
+		index, ok := c.Params.Get("index")
+		if !ok {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		startingIndex, err := strconv.Atoi(index)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		locationsPerPage := 5
+		endingIndex := startingIndex + locationsPerPage
+		user := userData.(*model.User)
+		location := model.NewLocation()
+		locations, err := location.GetLocationsByUserID(user.ID, database)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		if startingIndex >= len(locations) {
+			c.Redirect(303, "/app/view-locations/0")
+			return
+		}
+		if endingIndex > len(locations) {
+			endingIndex = len(locations)
+		}
+		visibleLocations := locations[startingIndex:endingIndex]
+		hasNoLocations := true
+		if len(locations) != 0 {
+			hasNoLocations = false
+		}
+		lastPage := false
+		if startingIndex + locationsPerPage > len(locations) {
+			lastPage = true
+		}
+		isFirstPage := startingIndex == 0
+		c.HTML(200, "view-locations.html", gin.H{
+			"Banner": "View Locations",
 			"IsViewAllLocationsPage": true,
+			"Locations": visibleLocations,
+			"HasNoLocations": hasNoLocations,
+			"HasLocations": !hasNoLocations,
+			"NextIndex": endingIndex+1,
+			"IsLastPage": lastPage,
+			"IsNotLastPage": !lastPage,
+			"PreviousIndex": (startingIndex-1)-locationsPerPage,
+			"IsFirstPage": isFirstPage,
 		})
 	})
 	
@@ -235,15 +290,15 @@ func main() {
 			c.Redirect(303, fmt.Sprintf("/app/create-location?CreateLocationFormErr=%s", err.Error()))
 			return
 		}
-		hasThreeOrMoreLocations, err := location.LimitNumberOfLocations(userModel.ID, database)
-		if err != nil {
-			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
-			return
-		}
-		if hasThreeOrMoreLocations {
-			c.Redirect(303, fmt.Sprintf("/app/create-location?CreateLocationFormErr=%s", "only 3 locations per user"))
-			return
-		}
+		// hasThreeOrMoreLocations, err := location.LimitNumberOfLocations(userModel.ID, database)
+		// if err != nil {
+		// 	c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+		// 	return
+		// }
+		// if hasThreeOrMoreLocations {
+		// 	c.Redirect(303, fmt.Sprintf("/app/create-location?CreateLocationFormErr=%s", "only 3 locations per user"))
+		// 	return
+		// }
 		location.SetUserID(userModel.ID)
 		err = location.Insert(database)
 		if err != nil {

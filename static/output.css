@@ -754,8 +754,16 @@ video {
   align-content: center;
 }
 
+.items-end {
+  align-items: flex-end;
+}
+
 .items-center {
   align-items: center;
+}
+
+.justify-start {
+  justify-content: flex-start;
 }
 
 .justify-end {
@@ -768,6 +776,14 @@ video {
 
 .justify-between {
   justify-content: space-between;
+}
+
+.self-start {
+  align-self: flex-start;
+}
+
+.self-end {
+  align-self: flex-end;
 }
 
 .self-center {
@@ -953,6 +969,11 @@ video {
   padding-bottom: 6rem;
 }
 
+.px-12 {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
 .pl-4 {
   padding-left: 1rem;
 }
@@ -1050,6 +1071,10 @@ video {
 
 .outline-lightgray {
   outline-color: #555555;
+}
+
+.\[startingIndex\:endingIndex\] {
+  starting-index: endingIndex;
 }
 
 .visited\:text-purple-500:visited {

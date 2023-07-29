@@ -1,6 +1,6 @@
 <form hx-boost="true" id="create-location-form" action="/api/location" method="POST" class="border p-4 border-gray bg-darkgray m-2 rounded text-white flex flex-col">
 	<div class="flex justify-between mb-8">
-		<h1 class="text-xl font-main">Create Locations</h1>
+		<h1 class="text-lg font-main">Create Locations</h1>
 	</div>
 	{{ if .CreateLocationFormErr }}
 		<p id="create-location-form-err" class="pl-4 mb-4 text-sm font-second text-yellow-400">{{ .CreateLocationFormErr }}</p>
