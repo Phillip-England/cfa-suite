@@ -4,6 +4,7 @@ import (
 	"cfa-suite/src/core"
 	"errors"
 	"strconv"
+	"strings"
 )
 
 type Location struct {
@@ -108,6 +109,42 @@ func (m *Location) GetLocationsByUserID(userID int64, database *core.Database) (
 		if err != nil {
 			return nil, err
 		}
+		locations = append(locations, location)
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return locations, nil
+}
+
+func (m *Location) GetLocationsBySearchAndUserID(userID int64, query string, database *core.Database) ([]*Location, error) {
+	// Convert the query to lowercase for case-insensitive comparison
+	lowercaseQuery := strings.ToLower(query)
+
+	// Query to fetch locations that match the given name and number, and belong to the current user
+	queryString := `
+		SELECT id, user_id, name, number
+		FROM location
+		WHERE user_id = $1 AND (LOWER(name) LIKE '%' || $2 || '%' OR number LIKE '%' || $2 || '%')
+	`
+
+	rows, err := database.Connection.Query(queryString, userID, lowercaseQuery)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	locations := []*Location{}
+	for rows.Next() {
+		location := NewLocation()
+		err := rows.Scan(&location.ID, &location.UserID, &location.Name, &location.Number)
+		if err != nil {
+			return nil, err
+		}
+		// Convert location name to lowercase for case-insensitive comparison
+		location.Name = strings.ToLower(location.Name)
 		locations = append(locations, location)
 	}
 

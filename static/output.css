@@ -1015,6 +1015,10 @@ video {
   line-height: 1rem;
 }
 
+.lowercase {
+  text-transform: lowercase;
+}
+
 .text-blue-500 {
   --tw-text-opacity: 1;
   color: rgb(59 130 246 / var(--tw-text-opacity));
@@ -1083,4 +1087,26 @@ video {
 
 .visited\:text-purple-500:visited {
   color: rgb(168 85 247 );
+}
+
+.focus\:border-lightgray:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(85 85 85 / var(--tw-border-opacity));
+}
+
+.focus\:outline-none:focus {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.focus\:outline-lightgray:focus {
+  outline-color: #555555;
+}
+
+.focus\:outline-gray:focus {
+  outline-color: #3d3d3d;
+}
+
+.focus\:outline-darkgray:focus {
+  outline-color: #303030;
 }

@@ -1,37 +1,41 @@
-<div class="border border-gray m-2 bg-darkgray rounded text-white">
-	<ul class="rounded">
-		{{ range .Locations }}
-			<li class="p-4 border rounded border-gray m-2">
-				<h3 class="font-second text-sm">{{ .Name }}</h3>
-			</li>
-		{{ end }}
-	</ul>
-	{{ if .HasLessThanOnePage }}
+{{ if .RenderLocationGallery }}
 
-	{{ else }}
-		<div class="flex border-t border-gray" hx-boost="true">
-			<div class="p-4 w-full">
-				<div class="flex w-full justify-between">
-					{{ if .RenderBackButton }}
-						<div _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex">
-							<a class="bg-main w-full py-2 px-12 rounded" href="/app/view-locations/{{ .PreviousIndex }}">
-								<i class="fa-solid fa-arrow-left self-center text-white"></i>
-							</a>
-						</div>
-					{{ else }}
-						<span></span>
-					{{ end }}
-					{{ if .RenderForwardButton  }}
-						<div _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex">
-							<a class="bg-main w-full py-2 px-12 rounded" href="/app/view-locations/{{ .NextIndex }}">
-								<i class="fa-solid fa-arrow-right self-center text-white"></i>
-							</a>
-						</div>
-					{{ else }}
-						<span></span>
-					{{ end }}
+	<div class="border border-gray m-2 bg-darkgray rounded text-white">
+		<ul class="rounded">
+			{{ range .Locations }}
+				<li class="p-4 border rounded border-gray m-2">
+					<h3 class="font-second text-sm">{{ .Name }}</h3>
+				</li>
+			{{ end }}
+		</ul>
+		{{ if .HasLessThanOnePage }}
+
+		{{ else }}
+			<div class="flex border-t border-gray" hx-boost="true">
+				<div class="p-4 w-full">
+					<div class="flex w-full justify-between">
+						{{ if .RenderBackButton }}
+							<div _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex">
+								<a class="bg-main w-full py-2 px-12 rounded" href="/app/view-locations/{{ .PreviousIndex }}">
+									<i class="fa-solid fa-arrow-left self-center text-white"></i>
+								</a>
+							</div>
+						{{ else }}
+							<span></span>
+						{{ end }}
+						{{ if .RenderForwardButton  }}
+							<div _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex">
+								<a class="bg-main w-full py-2 px-12 rounded" href="/app/view-locations/{{ .NextIndex }}">
+									<i class="fa-solid fa-arrow-right self-center text-white"></i>
+								</a>
+							</div>
+						{{ else }}
+							<span></span>
+						{{ end }}
+					</div>
 				</div>
 			</div>
-		</div>
-	{{ end }}
-</div>
+		{{ end }}
+	</div>
+
+{{ end }}

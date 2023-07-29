@@ -136,17 +136,23 @@ func main() {
 	// however, then intention of the app is that users do not have an huge running list of locations
 	// but wanted to leave the possibility open and implemented
 	protectedRoutes.GET("/app/view-locations/:index", func(c *gin.Context) {
+
+		// pulling user from middleware
 		userData, ok := c.Get("user")
 		if !ok {
 			c.Redirect(303, "/401")
 			return
 		}
+		user := userData.(*model.User)
+
+		// getting the index from the params
 		index, ok := c.Params.Get("index")
 		if !ok {
 			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
 			return
 		}
-		user := userData.(*model.User)
+		
+		// getting our users locations
 		location := model.NewLocation()
 		locations, err := location.GetLocationsByUserID(user.ID, database)
 		if err != nil {
@@ -182,7 +188,6 @@ func main() {
 			c.Redirect(303, "/app/view-locations/0")
 			return
 		}
-
 		
 		// only showing a limited number of locations per page
 		if endingIndex >= len(locations) {
@@ -194,6 +199,9 @@ func main() {
 			"Banner": "View Locations",
 			"IsViewAllLocationsPage": true,
 			"Locations": visibleLocations,
+			"SearchQuery": "",
+			"RenderLocationGallery": true,
+			"RenderSearchResults": false,
 			"CurrentStartingIndex": startingIndex,
 			"CurrentEndingIndex": endingIndex,
 			"RenderBackButton": renderBackButton,
@@ -324,6 +332,40 @@ func main() {
 			return
 		}
 		c.Redirect(303, "/app/home")
+	})
+
+	protectedRoutes.GET("/api/location/search", func(c *gin.Context) {
+		userData, ok := c.Get("user")
+		if !ok {
+			c.Redirect(303, "/401")
+			return
+		}
+		user := userData.(*model.User)
+		query := c.PostForm("query")
+		location := model.NewLocation()
+		locations, err := location.GetLocationsBySearchAndUserID(user.ID, query, database)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		fmt.Println(len(locations))
+		c.HTML(200, "view-locations.html", gin.H{
+			"Banner": "View Locations",
+			"IsViewAllLocationsPage": true,
+			"Locations": locations,
+			"SearchQuery": query,
+			"RenderLocationGallery": false,
+			"RenderSearchResults": true,
+			"CurrentStartingIndex": 0,
+			"CurrentEndingIndex": 0,
+			"RenderBackButton": false,
+			"RenderForwardButton": false,
+			"HasLocations": true,
+			"HasNoLocations": false,
+			"NextIndex": 0,
+			"PreviousIndex": 0,
+			"HasLessThanOnePage": true,
+		})
 	})
 
 	//==========================================================================

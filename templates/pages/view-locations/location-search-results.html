@@ -1,0 +1,11 @@
+{{ if .RenderSearchResults }}
+	<div class="border border-gray m-2 bg-darkgray rounded text-white">
+		<ul class="rounded">
+			{{ range .Locations }}
+				<li class="p-4 border rounded border-gray m-2">
+					<h3 class="font-second text-sm">{{ .Name }}</h3>
+				</li>
+			{{ end }}
+		</ul>
+	</div>
+{{ end }}
