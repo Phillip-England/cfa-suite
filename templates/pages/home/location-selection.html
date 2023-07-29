@@ -13,9 +13,10 @@
 			</li>
 		{{ end }}
 	</ul>
-	<div class="flex p-2">
-		<div class="py-2 px-6 bg-main w-full m-1 flex justify-center">
-			<a class="font-main">View More</a>
+	<div class="flex p-2 justify-center" hx-boost="true">
+		<div _="on click toggle .hidden on me then toggle .hidden on the next <div/>" class="py-2 px-6 bg-main w-full m-1 flex justify-center">
+			<a class="font-main" href="/app/view-all-locations">View More</a>
 		</div>
+		<div class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
 	</div>
 </div>

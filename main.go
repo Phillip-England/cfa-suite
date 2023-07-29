@@ -119,10 +119,17 @@ func main() {
 	})
 
 	protectedRoutes.GET("/app/create-location", func(c *gin.Context) {
-		c.HTML(303, "create-location.html", gin.H{
+		c.HTML(200, "create-location.html", gin.H{
 			"Banner": "CFA Suite",
 			"IsCreateLocationPage": true,
 			"CreateLocationFormErr": html.EscapeString(c.Query("CreateLocationFormErr")),
+		})
+	})
+
+	protectedRoutes.GET("/app/view-all-locations", func(c *gin.Context) {
+		c.HTML(200, "view-all-locations.html", gin.H{
+			"Banner": "CFA Suite",
+			"IsViewAllLocationsPage": true,
 		})
 	})
 	
