@@ -12,56 +12,7 @@
 	{{ template "big-loader.html" . }}
 	{{ template "big-loader-overlay.html" . }}
 	{{ if .HasNoLocations }} {{ template "no-locations-link.html" . }} {{ end }}
-	{{ if .HasLocations }}
-		<div class="border border-gray m-2 bg-darkgray rounded text-white">
-			<ul class="rounded">
-				{{ range .Locations }}
-					<li class="p-4 border rounded border-gray m-2">
-						<h3 class="font-second text-sm">{{ .Name }}</h3>
-					</li>
-				{{ end }}
-			</ul>
-			<div class="flex border-t border-gray" hx-boost="true">
-				<div class="p-4 w-full">
-					{{ if .IsLastPage }}
-						<div class="flex w-full justify-start">
-							<div _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex self-start">
-								<a class="bg-main w-full py-2 px-12 rounded" href="/app/view-locations/{{ .PreviousIndex }}">
-									<i class="fa-solid fa-arrow-left self-center text-white"></i>
-								</a>
-								<div class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
-							</div>
-						</div>
-					{{ end }}
-					{{ if .IsNotLastPage }}
-						{{ if .IsFirstPage }}
-							<div class="flex w-full justify-end">
-								<div _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex self-end">
-									<a class="bg-main w-full py-2 px-12 rounded" href="/app/view-locations/{{ .NextIndex }}">
-										<i class="fa-solid fa-arrow-right self-center text-white"></i>
-									</a>
-								</div>
-							</div>
-						{{ else }}
-							<div class="flex w-full justify-between">
-									<div _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex">
-										<a class="bg-main w-full py-2 px-12 rounded" href="/app/view-locations/{{ .PreviousIndex }}">
-											<i class="fa-solid fa-arrow-left self-center text-white"></i>
-										</a>
-									</div>
-									<div _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex">
-										<a class="bg-main w-full py-2 px-12 rounded" href="/app/view-locations/{{ .NextIndex }}">
-											<i class="fa-solid fa-arrow-right self-center text-white"></i>
-										</a>
-									</div>
-								</div>
-						{{ end }}
-					{{ end }}
-				</div>
-			</div>
-		</div>
-	{{ end }}
-
+	{{ if .HasLocations }} {{ template "location-gallery.html" . }} {{ end }}
 	{{ template "guest-footer.html" . }}
 </body>
 </html>

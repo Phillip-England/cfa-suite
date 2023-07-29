@@ -132,6 +132,9 @@ func main() {
 		})
 	})
 
+	// could be improved by only getting the locations from within the index in the db call
+	// however, then intention of the app is that users do not have an huge running list of locations
+	// but wanted to leave the possibility open and implemented
 	protectedRoutes.GET("/app/view-locations/:index", func(c *gin.Context) {
 		userData, ok := c.Get("user")
 		if !ok {
@@ -143,13 +146,6 @@ func main() {
 			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
 			return
 		}
-		startingIndex, err := strconv.Atoi(index)
-		if err != nil {
-			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
-			return
-		}
-		locationsPerPage := 5
-		endingIndex := startingIndex + locationsPerPage
 		user := userData.(*model.User)
 		location := model.NewLocation()
 		locations, err := location.GetLocationsByUserID(user.ID, database)
@@ -157,34 +153,56 @@ func main() {
 			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
 			return
 		}
-		if startingIndex >= len(locations) {
+
+		// setting up variables to determine how location-gallery.html functions
+		locationsPerPage := 5
+		hasLocations := len(locations) > 0
+		startingIndex, err := strconv.Atoi(index)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		endingIndex := startingIndex + locationsPerPage
+		nextIndex := startingIndex + locationsPerPage
+		previousIndex := startingIndex - locationsPerPage
+		hasLessThanOnePage := len(locations) < locationsPerPage
+		
+		// setting up rendering conditions for the back and forward buttons
+		renderBackButton := true
+		renderForwardButton := true
+		if startingIndex == 0 {
+			renderBackButton = false
+		}
+		if (startingIndex + locationsPerPage) >= len(locations) {
+			renderForwardButton = false
+		}
+
+		// handling manual :index input from users
+		if startingIndex >= len(locations) || startingIndex < 0 {
 			c.Redirect(303, "/app/view-locations/0")
 			return
 		}
-		if endingIndex > len(locations) {
+
+		
+		// only showing a limited number of locations per page
+		if endingIndex >= len(locations) {
 			endingIndex = len(locations)
 		}
 		visibleLocations := locations[startingIndex:endingIndex]
-		hasNoLocations := true
-		if len(locations) != 0 {
-			hasNoLocations = false
-		}
-		lastPage := false
-		if startingIndex + locationsPerPage > len(locations) {
-			lastPage = true
-		}
-		isFirstPage := startingIndex == 0
+
 		c.HTML(200, "view-locations.html", gin.H{
 			"Banner": "View Locations",
 			"IsViewAllLocationsPage": true,
 			"Locations": visibleLocations,
-			"HasNoLocations": hasNoLocations,
-			"HasLocations": !hasNoLocations,
-			"NextIndex": endingIndex+1,
-			"IsLastPage": lastPage,
-			"IsNotLastPage": !lastPage,
-			"PreviousIndex": (startingIndex-1)-locationsPerPage,
-			"IsFirstPage": isFirstPage,
+			"CurrentStartingIndex": startingIndex,
+			"CurrentEndingIndex": endingIndex,
+			"RenderBackButton": renderBackButton,
+			"RenderForwardButton": renderForwardButton,
+			"HasLocations": hasLocations,
+			"HasNoLocations": !hasLocations,
+			"NextIndex": nextIndex,
+			"PreviousIndex": previousIndex,
+			"HasLessThanOnePage": hasLessThanOnePage,
 		})
 	})
 	
