@@ -165,7 +165,7 @@ func main() {
 		endingIndex := startingIndex + locationsPerPage
 		nextIndex := startingIndex + locationsPerPage
 		previousIndex := startingIndex - locationsPerPage
-		hasLessThanOnePage := len(locations) < locationsPerPage
+		hasLessThanOnePage := len(locations) <= locationsPerPage
 		
 		// setting up rendering conditions for the back and forward buttons
 		renderBackButton := true
