@@ -39,6 +39,10 @@ func (d *Database) InitTables() error {
 	if err != nil {
 		return err
 	}
+	err = d.CreateEmailKeyTable()
+	if err != nil {
+		return err
+	}
 	return nil
 }
 
@@ -80,6 +84,22 @@ func (d *Database) CreateLocationTable() error {
 			user_id INT,
 			name VARCHAR(255),
 			number VARCHAR(255),
+			FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE
+		)
+	`
+	_, err := d.Connection.Exec(query)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (d *Database) CreateEmailKeyTable() error {
+	query := `
+		CREATE TABLE IF NOT EXISTS email_key (
+			id SERIAL PRIMARY KEY,
+			user_id INT,
+			key VARCHAR(255),
 			FOREIGN KEY (user_id) REFERENCES "user" (id) ON DELETE CASCADE
 		)
 	`

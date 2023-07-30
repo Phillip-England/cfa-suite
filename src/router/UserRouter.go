@@ -65,10 +65,11 @@ func (router *UserRouter) CreateLocationPageRoute() {
 	})
 }
 
-func (router *UserRouter) UserSettingsRoute() {
+func (router *UserRouter) UserSettingsPageRoute() {
 	router.Group.GET("/app/user-settings", func(c *gin.Context) {
 		c.HTML(200, "user-settings.html", gin.H{
 			"Banner": "CFA Suite",
+			"IsUserSettingsPage": true,
 		})
 	})
 }

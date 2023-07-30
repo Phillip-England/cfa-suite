@@ -74,7 +74,7 @@ func main() {
 	
 	userRouter := router.NewUserRouter(authGroup, database)
 	userRouter.HomeRoute()
-	userRouter.UserSettingsRoute()
+	userRouter.UserSettingsPageRoute()
 	userRouter.CreateLocationPageRoute()
 	userRouter.LogoutRoute()
 	userRouter.CreateLocationRoute()
@@ -86,6 +86,6 @@ func main() {
 	//==========================================================================
 
 	r.Run()
-	//coment
+	
 
 }

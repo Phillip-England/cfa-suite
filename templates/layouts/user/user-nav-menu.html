@@ -1,15 +1,15 @@
-<nav hx-boost="true" id="user-nav-menu" class="hidden text-white fixed z-40 bg-darkgray border-r-2 border-gray w-3/5 h-full">
+<nav hx-boost="true" id="user-nav-menu" class="hidden text-white fixed z-40 bg-black border-r-2 border-gray w-3/5 h-full">
 	<ul class="text-sm font-second">
-		<li class="flex rounded m-2 border border-gray {{ if .IsHomePage }} border-2 border-lightgray {{ end }}">
+		<li class="flex rounded m-2 border bg-darkgray border-gray {{ if .IsHomePage }} border-2 border-lightgray {{ end }}">
 			<a href="/app/home" class="p-4 w-full" _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay then toggle .hidden on #user-nav-menu then toggle .hidden on #user-banner-bars then toggle .hidden on #user-banner-x then toggle .hidden on #user-nav-overlay">Home</a>
 		</li>
-		<li class="flex rounded m-2 border border-gray {{ if .IsCreateLocationPage }} border-2 border-lightgray {{ end }}">
+		<li class="flex rounded m-2 border bg-darkgray border-gray {{ if .IsCreateLocationPage }} border-2 border-lightgray {{ end }}">
 			<a href="/app/create-location" class="p-4 w-full" _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay then toggle .hidden on #user-nav-menu then toggle .hidden on #user-banner-bars then toggle .hidden on #user-banner-x then toggle .hidden on #user-nav-overlay">Create Locations</a>
 		</li>
-		<li class="flex border border-gray rounded m-2">
+		<li class="flex rounded m-2 border bg-darkgray border-gray {{ if .IsUserSettingsPage }} border-2 border-lightgray {{ end }}">
 			<a href="/app/user-settings" class="p-4 w-full" _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay then toggle .hidden on #user-nav-menu then toggle .hidden on #user-banner-bars then toggle .hidden on #user-banner-x then toggle .hidden on #user-nav-overlay">User Settings</a>
 		</li>
-		<li class="flex border border-gray rounded m-2">
+		<li class="flex border border-gray bg-darkgray rounded m-2">
 			<a href="/api/logout" class="p-4 w-full" _="on click toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay then toggle .hidden on #user-nav-menu then toggle .hidden on #user-banner-bars then toggle .hidden on #user-banner-x then toggle .hidden on #user-nav-overlay">Logout</a>
 		</li>
 	</ul>
