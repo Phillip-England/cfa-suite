@@ -149,7 +149,12 @@ func (router *UserRouter) DeleteUserRoute() {
 			c.Redirect(303, "/app/user-settings/delete?DeleteUserFormErr=invalid email provided")
 			return
 		}
-		c.Redirect(303, "/app/user-settings/delete")
+		err := user.Delete(router.Database)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		c.Redirect(303, "/api/logout")
 	})
 }
 

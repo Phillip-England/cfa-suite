@@ -149,3 +149,12 @@ func (m *User) FindById(database *core.Database, userId int64) (error) {
 	}
 	return nil
 }
+
+func (m *User) Delete(database *core.Database) (error) {
+	query := `DELETE FROM "user" WHERE id = $1`
+	_, err := database.Connection.Exec(query, m.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
