@@ -2,7 +2,7 @@
 	<h2 class="font-main text-lg py-6 px-4">Select a Location</h2>
 	<ul class="p-1 border-t-2 border-b border-gray">
 		{{ range .Locations }}
-			<li class="flex justify-between p-4 m-2 rounded border border-gray items-center">
+			<li _="on click toggle .border-lightgray on me then toggle .hidden on #big-loader then toggle .hidden on #big-loader-overlay" class="flex justify-between p-4 m-2 rounded border border-gray items-center">
 				<div>
 					<h3 class="font-main">{{ .Name }}</h3>
 					<p class="text-xs font-second">{{ .Number }}</p>
@@ -13,10 +13,4 @@
 			</li>
 		{{ end }}
 	</ul>
-	<div class="flex p-2 justify-center" hx-boost="true">
-		<div _="on click toggle .hidden on me then toggle .hidden on the next <div/>" class="py-2 px-6 bg-main w-full m-1 flex justify-center">
-			<a class="font-main" href="/app/view-locations/0">View More</a>
-		</div>
-		<div class="hidden border-2 py-2 m-4 animate-spin w-8 h-8 border border-white rounded-full border-t-main"></div>
-	</div>
 </div>
