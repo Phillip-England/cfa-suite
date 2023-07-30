@@ -1,0 +1,15 @@
+<form hx-boost="true" method="POST" action="/api/user/delete" _="on submit toggle .hidden on #big-loader-overlay then toggle .hidden on #big-loader" class="bg-darkgray border border-gray m-2 text-white flex flex-col">
+	<div class="p-4">
+		<h2 class="font-main text-lg">Delete Your Account</h2>
+		<p class="font-second text-sm">Type {{ .Email }} below to delete your account.</p>
+	</div>
+	<div>
+		{{ if .DeleteUserFormErr }}
+			<p id="login-form-err" class="pl-4 mb-2 text-sm font-second text-yellow-400">{{ .DeleteUserFormErr }}</p>
+		{{ end }}
+	</div>
+	<div class="flex flex-col p-4">
+		<input type="text" name="email" class="w-full mb-4 rounded bg-darkgray border border-gray p-2 text-sm" />
+		<input type="submit" class="bg-main rounded font-main w-full px-6 py-2" />
+	</div>
+</form>

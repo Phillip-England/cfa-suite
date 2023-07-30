@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -116,6 +117,39 @@ func (router *UserRouter) CreateLocationRoute() {
 			return
 		}
 		c.Redirect(303, "/app/home")
+	})
+}
+
+func (router *UserRouter) DeleteUserPageRoute() {
+	router.Group.GET("/app/user-settings/delete", func(c *gin.Context) {
+		user, ok := c.Get("user")
+		if !ok {
+			c.Redirect(303, "/401")
+			return
+		}
+		userModel := user.(*model.User)
+		c.HTML(303, "delete-user.html", gin.H{
+			"Banner": "CFA Suite",
+			"Email": userModel.Email,
+			"DeleteUserFormErr": html.EscapeString(c.Query("DeleteUserFormErr")),
+		})
+	})
+}
+
+func (router *UserRouter) DeleteUserRoute() {
+	router.Group.POST("/api/user/delete", func(c *gin.Context) {
+		userData, ok := c.Get("user")
+		if !ok {
+			c.Redirect(303, "/401")
+			return
+		}
+		user := userData.(*model.User)
+		email := c.PostForm("email")
+		if strings.ToLower(email) != user.Email {
+			c.Redirect(303, "/app/user-settings/delete?DeleteUserFormErr=invalid email provided")
+			return
+		}
+		c.Redirect(303, "/app/user-settings/delete")
 	})
 }
 

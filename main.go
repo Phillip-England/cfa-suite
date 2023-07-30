@@ -78,6 +78,8 @@ func main() {
 	userRouter.CreateLocationPageRoute()
 	userRouter.LogoutRoute()
 	userRouter.CreateLocationRoute()
+	userRouter.DeleteUserPageRoute()
+	userRouter.DeleteUserRoute()
 
 	//==========================================================================
 	// RUNNING
