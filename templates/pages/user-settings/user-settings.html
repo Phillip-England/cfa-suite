@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	{{ template "meta.html" . }}
-	<title>View Locations | CFA Suite</title>
+	<title>Home | CFA Suite</title>
 </head>
 <body class="bg-black">
 	{{ template "user-banner.html" . }}
@@ -11,10 +11,10 @@
 	{{ template "user-nav-overlay.html" . }}
 	{{ template "big-loader.html" . }}
 	{{ template "big-loader-overlay.html" . }}
-	{{ template "location-search.html" . }}
-	{{ if .HasNoLocations }} {{ template "no-locations-link.html" . }} {{ end }}
-	{{ if .HasLocations }} {{ template "location-gallery.html" . }} {{ end }}
-	{{ template "location-search-results.html" . }}
+
+
+
+
 	{{ template "guest-footer.html" . }}
 </body>
 </html>
