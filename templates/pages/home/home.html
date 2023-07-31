@@ -12,8 +12,11 @@
 	{{ template "big-loader.html" . }}
 	{{ template "big-loader-overlay.html" . }}
 	{{ template "welcome-home.html" . }}
+	{{ if .AccountIsNotActive }} {{ template "verify-your-account.html" . }} {{ end }}
 	{{ if .HasNoLocations }} {{ template "no-locations-link.html" . }} {{ end }}
 	{{ if .HasLocations }} {{ template "location-selection.html" . }} {{ end }}
+
+
 	{{ template "guest-footer.html" . }}
 </body>
 </html>

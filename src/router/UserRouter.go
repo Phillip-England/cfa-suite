@@ -13,12 +13,14 @@ import (
 
 type UserRouter struct {
 	Group *gin.RouterGroup
+	Engine *gin.Engine
 	Database *core.Database
 }
 
-func NewUserRouter(group *gin.RouterGroup, database *core.Database) *UserRouter {
+func NewUserRouter(engine *gin.Engine, group *gin.RouterGroup, database *core.Database) *UserRouter {
 	return &UserRouter{
 		Group: group,
+		Engine: engine,
 		Database: database,
 	}
 }
@@ -45,12 +47,18 @@ func (router *UserRouter) HomeRoute() {
 		if len(locations) != 0 {
 			hasNoLocations = false
 		}
+		accountIsNotActive := true
+		if user.Active {
+			accountIsNotActive = false
+		}
+		fmt.Println(user.Active)
 		c.HTML(200, "home.html", gin.H{
 			"Banner": "CFA Suite",
 			"IsHomePage": "true",
 			"Locations": locations,
 			"HasNoLocations": hasNoLocations,
 			"HasLocations": !hasNoLocations,
+			"AccountIsNotActive": accountIsNotActive,
 		})
 	})
 }
@@ -156,6 +164,38 @@ func (router *UserRouter) DeleteUserRoute() {
 			return
 		}
 		c.Redirect(303, "/api/logout")
+	})
+}
+
+func (router *UserRouter) VerifyAccountRoute() {
+	router.Engine.GET("/api/verify-account/:key", func(c *gin.Context) {
+		emailKey := model.NewEmailKey()
+		key, ok := c.Params.Get("key")
+		if !ok {
+			c.Redirect(303, "/500?ServerErr=Account Verification Failed")
+			return
+		}
+		err, foundResult := emailKey.FindByKey(router.Database, key)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerError=%s", err.Error()))
+			return
+		}
+		if !foundResult {
+			c.Redirect(303, fmt.Sprintf("/500?ServerError=%s", "Account Verification Failed"))
+			return
+		}
+		user := model.NewUser()
+		err = user.FindById(router.Database, *emailKey.UserID)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerError=%s", err.Error()))
+			return
+		}
+		err = user.VerifyAccount(router.Database)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerError=%s", err.Error()))
+			return
+		}
+		c.Redirect(303, "/")
 	})
 }
 

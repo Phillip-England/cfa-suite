@@ -51,7 +51,8 @@ func (d *Database) CreateUserTable() error {
 	CREATE TABLE IF NOT EXISTS "user" (
 		id SERIAL PRIMARY KEY,
 		email TEXT UNIQUE NOT NULL,
-		password TEXT NOT NULL
+		password TEXT NOT NULL,
+		active BOOLEAN NOT NULL
 		)
 	`
 	_, err := d.Connection.Exec(query)
@@ -107,5 +108,23 @@ func (d *Database) CreateEmailKeyTable() error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (d *Database) AddActiveColumnToUserTable() error {
+	query := `
+		ALTER TABLE "user" ADD COLUMN IF NOT EXISTS active BOOLEAN NOT NULL DEFAULT false
+	`
+	_, err := d.Connection.Exec(query)
+	if err != nil {
+		return err
+	}
+
+	// Set all users' 'active' field to 'false'
+	_, err = d.Connection.Exec("UPDATE \"user\" SET active = false")
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

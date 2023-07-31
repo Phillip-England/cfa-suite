@@ -117,6 +117,22 @@ func (router *GuestRouter) SignupUserRoute() {
 			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
 			return
 		}
-		c.Redirect(303, "/")
+		emailKey := model.NewEmailKey()
+		emailKey.SetUserID(user.ID)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		err = emailKey.Insert(router.Database)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		err = emailKey.SendAccountVerificationEmail(user.Email)
+		if err != nil {
+			c.Redirect(303, fmt.Sprintf("/500?ServerErr=%s", err.Error()))
+			return
+		}
+		c.Redirect(303, fmt.Sprintf("/?Email=%s&Password=%s", user.Email, password))
 	})
 }

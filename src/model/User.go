@@ -16,6 +16,7 @@ type User struct {
 	ID int64
 	Email string
 	Password string
+	Active bool
 }
 
 func NewUser() (*User) {
@@ -77,8 +78,8 @@ func (m *User) IsUnique(database *core.Database) (bool, error) {
 }
 
 func (m *User) Insert(database *core.Database) error {
-	statement := `INSERT INTO "user" (email, password) VALUES ($1, $2) RETURNING id`
-	err := database.Connection.QueryRow(statement, m.Email, m.Password).Scan(&m.ID)
+	statement := `INSERT INTO "user" (email, password, active) VALUES ($1, $2, $3) RETURNING id`
+	err := database.Connection.QueryRow(statement, m.Email, m.Password, false).Scan(&m.ID)
 	if err != nil {
 		return err
 	}
@@ -141,9 +142,9 @@ func (m *User) Auth(c *gin.Context, database *core.Database) error {
 }
 
 func (m *User) FindById(database *core.Database, userId int64) (error) {
-	query := `SELECT id, email, password FROM "user" WHERE id = $1`
+	query := `SELECT id, email, password, active FROM "user" WHERE id = $1`
 	row := database.Connection.QueryRow(query, userId)
-	err := row.Scan(&m.ID, &m.Email, &m.Password)
+	err := row.Scan(&m.ID, &m.Email, &m.Password, &m.Active)
 	if err != nil {
 		return err
 	}
@@ -153,6 +154,18 @@ func (m *User) FindById(database *core.Database, userId int64) (error) {
 func (m *User) Delete(database *core.Database) (error) {
 	query := `DELETE FROM "user" WHERE id = $1`
 	_, err := database.Connection.Exec(query, m.ID)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (m *User) VerifyAccount(database *core.Database) error {
+	if m.Email == "" {
+		return errors.New("email is required")
+	}
+	query := `UPDATE "user" SET active = true WHERE email = $1`
+	_, err := database.Connection.Exec(query, m.Email)
 	if err != nil {
 		return err
 	}

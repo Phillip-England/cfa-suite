@@ -7,10 +7,10 @@ import (
 )
 
 type ErrorRouter struct {
-	Group *gin.RouterGroup
+	Group *gin.Engine
 }
 
-func NewErrorRouter(group *gin.RouterGroup) *ErrorRouter {
+func NewErrorRouter(group *gin.Engine) *ErrorRouter {
 	return &ErrorRouter{
 		Group: group,
 	}

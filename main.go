@@ -48,7 +48,6 @@ func main() {
 	mw := middleware.NewMiddlware()
 	authGroup := r.Group("/", mw.Auth(database))
 	guestGroup := r.Group("/", mw.GuestRedirect())
-	errorGroup := r.Group("/", nil)
 
 	//==========================================================================
 	// GUEST ROUTES
@@ -64,7 +63,7 @@ func main() {
 	// ERROR ROUTES
 	//==========================================================================
 	
-	errorRouter := router.NewErrorRouter(errorGroup)
+	errorRouter := router.NewErrorRouter(r)
 	errorRouter.InternalServerErrorRoute()
 	errorRouter.UnauthorizedRoute()
 	
@@ -72,7 +71,7 @@ func main() {
 	// USER ROUTES
 	//==================r=======================================================
 	
-	userRouter := router.NewUserRouter(authGroup, database)
+	userRouter := router.NewUserRouter(r, authGroup, database)
 	userRouter.HomeRoute()
 	userRouter.UserSettingsPageRoute()
 	userRouter.CreateLocationPageRoute()
@@ -80,6 +79,7 @@ func main() {
 	userRouter.CreateLocationRoute()
 	userRouter.DeleteUserPageRoute()
 	userRouter.DeleteUserRoute()
+	userRouter.VerifyAccountRoute()
 
 	//==========================================================================
 	// RUNNING
