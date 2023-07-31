@@ -8,7 +8,7 @@ WORKDIR /app
 COPY ./ /app
 
 # Build the Go binary inside the /app directory
-RUN go build -o main ./path/to/your/main/package
+RUN go build -o main .
 
 # Set the entry point to run the compiled binary
 ENTRYPOINT ["./main"]
