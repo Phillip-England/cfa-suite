@@ -1,9 +1,14 @@
+# Use the official Go image as the base image
 FROM golang:latest
 
+# Set the working directory to /app
 WORKDIR /app
 
 # Copy the entire root directory into the container
 COPY ./ /app
 
-# Run go run main.go inside the /app directory
-CMD ["go", "run", "main.go"]
+# Build the Go binary inside the /app directory
+RUN go build -o main ./path/to/your/main/package
+
+# Set the entry point to run the compiled binary
+ENTRYPOINT ["./main"]
