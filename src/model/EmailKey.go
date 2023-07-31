@@ -71,7 +71,7 @@ func (m *EmailKey) SendAccountVerificationEmail(email string) error {
     mailer.SetHeader("To", email)
     mailer.SetHeader("Subject", subject)
     mailer.SetBody("text/plain", body)
-    d := gomail.NewDialer("smtp.office365.com", 587, appEmail, appEmailPassword)
+    d := gomail.NewDialer(os.Getenv("SMTP_SERVER"), 587, appEmail, appEmailPassword)
 	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
     if err := d.DialAndSend(mailer); err != nil {
         return err
