@@ -64,6 +64,7 @@ func (m *EmailKey) SendAccountVerificationEmail(email string) error {
 	} else {
 		verificationLink = "https://" + os.Getenv("SERVER_URL") + "/api/verify-account/" + m.Key
 	}
+	fmt.Println(verificationLink)
     body := fmt.Sprintf("Dear user,\n\nPlease use the following verification link to verify your account:\n\n%s\n\nBest regards,\nThe CFA Suite Team", verificationLink)
     mailer := gomail.NewMessage()
     mailer.SetHeader("From", appEmail) // Replace with your sender email address
