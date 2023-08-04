@@ -13,7 +13,7 @@ To get started, follow these steps to clone the repository and set up the necess
 git clone https://github.com/phillip-england/cfa-suite
 ```
 
-2. Create a .env file in the root directory of the project.
+2. Create a .env file in the root directory of the project:
 
 ```bash
 touch .env

@@ -3,14 +3,14 @@ package model
 import (
 	"cfa-suite/src/core"
 	"crypto/rand"
-	"crypto/tls"
 	"database/sql"
 	"encoding/base64"
 	"errors"
 	"fmt"
 	"os"
 
-	"github.com/go-gomail/gomail"
+	"github.com/sendgrid/sendgrid-go"
+	"github.com/sendgrid/sendgrid-go/helpers/mail"
 )
 
 type EmailKey struct {
@@ -55,28 +55,23 @@ func (m *EmailKey) SendAccountVerificationEmail(email string) error {
     if m.Key == "" {
         return errors.New("verification key not generated")
     }
-	appEmail := os.Getenv("APP_EMAIL")
-	appEmailPassword := os.Getenv("APP_EMAIL_PASSWORD")
-    subject := "CFA Suite | Verify Your Account"
+	from := mail.NewEmail("Example User", os.Getenv("APP_EMAIL"))
+	subject := "Email Verification |"
+	to := mail.NewEmail("CFA Suite", "phillip.mark.england@gmail.com")
 	var verificationLink string
 	if os.Getenv("GO_ENV") == "dev" {
 		verificationLink = "http://" + os.Getenv("SERVER_URL") + ":" + os.Getenv("PORT") + "/api/verify-account/" + m.Key
 	} else {
 		verificationLink = "https://" + os.Getenv("SERVER_URL") + "/api/verify-account/" + m.Key
 	}
-	fmt.Println(verificationLink)
-    body := fmt.Sprintf("Dear user,\n\nPlease use the following verification link to verify your account:\n\n%s\n\nBest regards,\nThe CFA Suite Team", verificationLink)
-    mailer := gomail.NewMessage()
-    mailer.SetHeader("From", appEmail) // Replace with your sender email address
-    mailer.SetHeader("To", email)
-    mailer.SetHeader("Subject", subject)
-    mailer.SetBody("text/plain", body)
-    d := gomail.NewDialer(os.Getenv("SMTP_SERVER"), 587, appEmail, appEmailPassword)
-	d.TLSConfig = &tls.Config{InsecureSkipVerify: true}
-    if err := d.DialAndSend(mailer); err != nil {
-        return err
-    }
-    return nil
+	body := fmt.Sprintf("Dear user,\n\nPlease use the following verification link to verify your account:\n\n%s\n\nBest regards,\nThe CFA Suite Team", verificationLink)
+	message := mail.NewSingleEmail(from, subject, to, body, "")
+	client := sendgrid.NewSendClient(os.Getenv("SENDGRID_API_KEY"))
+	_, err := client.Send(message)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (m *EmailKey) FindByKey(database *core.Database, key string) (error, bool) {
