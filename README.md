@@ -27,17 +27,15 @@ touch .env
 
 - SERVER_URL: In a development environment, set this variable to "localhost." For production, it should point to the index domain of the server running your application.
 
-- APP_EMAIL: The email address you wish account recovery to be sent through.
-
-- APP_EMAIL_PASSWORD: The password of the email address you with account recovery to be sent through.
-
-- SMTP_SERVER: The SMTP server address for your email provider.
+- APP_EMAIL: The email address you wish the application to send emails from.
 
 - PORT: The port number you wish the application to be served on.
 
 - GO_ENV: set to either "dev" or "prod" depending on the environment the application is ran in.
 
-4. Install the tailwind dependancy
+-SENDGRID_API_KEY: SendGrid is used in this application to send emails. You can send 100 free emails a month with a free account at https://sendgrid.com/
+
+4. Install tailwind via npm (included in package.json)
 
 ```bash
 npm install
